@@ -20,25 +20,29 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- apply saved theme before paint to avoid a flash -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("flushicons-theme");
+        if (t) document.documentElement.setAttribute("data-theme", t);
+      } catch (e) {}
+    })();
+  </script>
+
   <!-- NAV -->
   <header class="nav" id="nav">
     <a class="brand" href="#top" aria-label="Flushicons home">
-      <svg class="brand-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <circle cx="12" cy="12" r="3"/>
-        <circle cx="5" cy="6" r="2"/>
-        <circle cx="19" cy="6" r="2"/>
-        <circle cx="6" cy="19" r="2"/>
-        <path d="M7 7l3 3m7-3l-3 3m-4 5l-3 3"/>
-      </svg>
-      <span class="brand-lock">
-        <span class="wm">Flushicons</span>
-        <span class="brand-tag"><span class="sep">//</span>Icons for complex ideas</span>
-      </span>
+      <span class="brand-lock"><span class="wm">Flushicons</span></span>
     </a>
     <nav class="nav-links" aria-label="Primary">
       <a href="#showcase">Icons</a>
       <a href="#included">Included</a>
       <a href="#why">Why</a>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch color theme" title="Switch theme">
+        <svg class="t-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.3M12 19.1v2.3M4.5 4.5l1.6 1.6M17.9 17.9l1.6 1.6M2.6 12h2.3M19.1 12h2.3M4.5 19.5l1.6-1.6M17.9 6.1l1.6-1.6"/></svg>
+        <svg class="t-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.4A8 8 0 1 1 9.6 4a6.3 6.3 0 0 0 10.4 10.4z"/></svg>
+      </button>
       <a class="btn btn-sm" data-buy href="#buy">Buy — $8</a>
     </nav>
   </header>

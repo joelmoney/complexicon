@@ -229,7 +229,38 @@ if (!prefersReduced && lineTargets.length) {
 })();
 
 /* ------------------------------------------------------------
-   6. TIME-BASED GREETING  (a nod to the Flush brand)
+   6. THEME TOGGLE  (light / dark, remembers the choice)
+------------------------------------------------------------ */
+(function themeToggle() {
+  const KEY = "flushicons-theme";
+  const root = document.documentElement;
+  const btn = document.getElementById("themeToggle");
+  if (!btn) return;
+
+  const systemDark = () =>
+    window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const current = () => {
+    const saved = localStorage.getItem(KEY);
+    if (saved === "light" || saved === "dark") return saved;
+    return systemDark() ? "dark" : "light";
+  };
+  const label = () =>
+    btn.setAttribute(
+      "aria-label",
+      current() === "dark" ? "Switch to light theme" : "Switch to dark theme"
+    );
+
+  label();
+  btn.addEventListener("click", () => {
+    const next = current() === "dark" ? "light" : "dark";
+    try { localStorage.setItem(KEY, next); } catch (e) {}
+    root.setAttribute("data-theme", next);
+    label();
+  });
+})();
+
+/* ------------------------------------------------------------
+   7. TIME-BASED GREETING  (a nod to the Flush brand)
 ------------------------------------------------------------ */
 (function greeting() {
   const el = document.getElementById("greeting");
@@ -240,6 +271,6 @@ if (!prefersReduced && lineTargets.length) {
 })();
 
 /* ------------------------------------------------------------
-   7. FOOTER YEAR
+   8. FOOTER YEAR
 ------------------------------------------------------------ */
 document.getElementById("year").textContent = new Date().getFullYear();
