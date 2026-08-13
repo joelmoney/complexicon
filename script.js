@@ -82,16 +82,85 @@ const ICONS = [
   if (!grid) return;
   const frag = document.createDocumentFragment();
   ICONS.forEach((icon, i) => {
-    const cell = document.createElement("div");
+    const cell = document.createElement("button");
+    cell.type = "button";
     cell.className = "icon-cell reveal";
-    cell.setAttribute("role", "listitem");
-    cell.style.transitionDelay = `${Math.min(i * 25, 300)}ms`;
+    cell.setAttribute("aria-label", `Preview ${icon.name}`);
+    // richer cascade: a wave that resets every 10 cells so delays stay short
+    cell.style.transitionDelay = `${(i % 10) * 45}ms`;
     cell.innerHTML = `
       <svg viewBox="0 0 24 24" aria-hidden="true">${icon.svg}</svg>
       <span>${icon.name}</span>`;
+    cell.addEventListener("click", () => openLightbox(i));
     frag.appendChild(cell);
   });
   grid.appendChild(frag);
+})();
+
+/* ------------------------------------------------------------
+   2b. ICON PREVIEW LIGHTBOX
+------------------------------------------------------------ */
+const openLightbox = (function () {
+  const lb = document.getElementById("lightbox");
+  if (!lb) return function () {};
+  const elLight = lb.querySelector("#lbLight");
+  const elDark = lb.querySelector("#lbDark");
+  const elName = lb.querySelector("#lbName");
+  const elPos = lb.querySelector("#lbPos");
+  const elSizes = lb.querySelector("#lbSizes");
+  const closers = lb.querySelectorAll("[data-lb-close]");
+  const prevBtn = lb.querySelector(".lb-prev");
+  const nextBtn = lb.querySelector(".lb-next");
+  const SIZES = [16, 24, 32, 64, 128];
+  let idx = 0;
+  let lastFocus = null;
+
+  function svgMarkup(icon) {
+    return `<svg viewBox="0 0 24 24" aria-hidden="true">${icon.svg}</svg>`;
+  }
+
+  function render() {
+    const icon = ICONS[idx];
+    elLight.innerHTML = svgMarkup(icon);
+    elDark.innerHTML = svgMarkup(icon);
+    elName.textContent = icon.name;
+    elPos.textContent = idx + 1;
+    elSizes.innerHTML = SIZES.map((s) => {
+      const px = Math.min(s, 96);
+      return `<div class="lb-size"><span class="chip" style="width:${px}px;height:${px}px">
+        <svg viewBox="0 0 24 24" width="${px}" height="${px}" aria-hidden="true">${icon.svg}</svg>
+      </span><b>${s}px</b></div>`;
+    }).join("");
+  }
+
+  function open(i) {
+    idx = (i + ICONS.length) % ICONS.length;
+    render();
+    lastFocus = document.activeElement;
+    lb.classList.add("open");
+    lb.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+    (lb.querySelector(".lb-close")).focus();
+  }
+  function close() {
+    lb.classList.remove("open");
+    lb.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+  const step = (d) => { idx = (idx + d + ICONS.length) % ICONS.length; render(); };
+
+  closers.forEach((c) => c.addEventListener("click", close));
+  prevBtn.addEventListener("click", () => step(-1));
+  nextBtn.addEventListener("click", () => step(1));
+  document.addEventListener("keydown", (e) => {
+    if (!lb.classList.contains("open")) return;
+    if (e.key === "Escape") close();
+    else if (e.key === "ArrowLeft") step(-1);
+    else if (e.key === "ArrowRight") step(1);
+  });
+
+  return open;
 })();
 
 /* ------------------------------------------------------------
@@ -226,6 +295,37 @@ if (!prefersReduced && lineTargets.length) {
   };
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
+})();
+
+/* ------------------------------------------------------------
+   5b. SCROLLSPY — highlight the active section in the nav
+------------------------------------------------------------ */
+(function scrollSpy() {
+  const links = Array.from(document.querySelectorAll(".nav-links a[data-spy]"));
+  if (!links.length || !("IntersectionObserver" in window)) return;
+  const byId = new Map(links.map((a) => [a.dataset.spy, a]));
+  const sections = links
+    .map((a) => document.getElementById(a.dataset.spy))
+    .filter(Boolean);
+
+  let activeId = null;
+  const setActive = (id) => {
+    if (id === activeId) return;
+    activeId = id;
+    links.forEach((a) => a.classList.toggle("active", a.dataset.spy === id));
+  };
+
+  const io = new IntersectionObserver(
+    (entries) => {
+      // pick the entry nearest the top that is intersecting
+      const visible = entries
+        .filter((e) => e.isIntersecting)
+        .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+      if (visible.length) setActive(visible[0].target.id);
+    },
+    { rootMargin: "-45% 0px -50% 0px", threshold: 0 }
+  );
+  sections.forEach((s) => io.observe(s));
 })();
 
 /* ------------------------------------------------------------

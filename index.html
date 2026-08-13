@@ -11,9 +11,8 @@
   <meta property="og:description" content="A visual language for modern technology. 30 concept icons for $8." />
   <meta property="og:type" content="website" />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="preload" href="fonts/inter-800.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin />
 
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23141416' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3Ccircle cx='5' cy='6' r='2'/%3E%3Ccircle cx='19' cy='6' r='2'/%3E%3Ccircle cx='6' cy='19' r='2'/%3E%3Cpath d='M7 7l3 3m7-3l-3 3m-4 5l-3 3'/%3E%3C/svg%3E" />
 
@@ -36,9 +35,10 @@
       <span class="brand-lock"><span class="wm">Flushicons</span></span>
     </a>
     <nav class="nav-links" aria-label="Primary">
-      <a href="#showcase">Icons</a>
-      <a href="#included">Included</a>
-      <a href="#why">Why</a>
+      <a href="#showcase" data-spy="showcase">Icons</a>
+      <a href="#included" data-spy="included">Included</a>
+      <a href="#why" data-spy="why">Why</a>
+      <a href="#faq" data-spy="faq">FAQ</a>
       <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch color theme" title="Switch theme">
         <svg class="t-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.3M12 19.1v2.3M4.5 4.5l1.6 1.6M17.9 17.9l1.6 1.6M2.6 12h2.3M19.1 12h2.3M4.5 19.5l1.6-1.6M17.9 6.1l1.6-1.6"/></svg>
         <svg class="t-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.4A8 8 0 1 1 9.6 4a6.3 6.3 0 0 0 10.4 10.4z"/></svg>
@@ -108,7 +108,7 @@
         <p>30 modern-technology concept icons. Built for presentations, websites, apps, reports, diagrams and white papers — anywhere you need to make complicated technology easier to understand.</p>
       </div>
 
-      <div class="icon-grid" id="iconGrid" role="list">
+      <div class="icon-grid" id="iconGrid">
         <!-- icons injected by script.js -->
       </div>
     </section>
@@ -212,6 +212,67 @@
       </div>
     </section>
 
+    <!-- FAQ -->
+    <section class="faq" id="faq">
+      <div class="section-head reveal">
+        <span class="eyebrow">Questions</span>
+        <h2 data-lines>Everything you need to know.</h2>
+      </div>
+
+      <div class="faq-list reveal">
+        <details name="faq" class="faq-item">
+          <summary>
+            <span>What's included in the license?</span>
+            <span class="faq-mark" aria-hidden="true"></span>
+          </summary>
+          <div class="faq-body"><div>
+            <p>One simple, one-time license. Use all 30 icons in unlimited personal
+            <strong>and</strong> commercial projects — presentations, websites, apps,
+            reports, diagrams, client work and products you sell. Resize and recolor
+            them freely. No attribution required, no subscription, no per-seat fees.</p>
+            <p>The only thing you can't do is resell or redistribute the icons themselves
+            as icons (for example, as part of another icon pack or template marketplace).</p>
+          </div></div>
+        </details>
+
+        <details name="faq" class="faq-item">
+          <summary>
+            <span>What files and sizes do I get?</span>
+            <span class="faq-mark" aria-hidden="true"></span>
+          </summary>
+          <div class="faq-body"><div>
+            <p>Every icon ships as <strong>SVG</strong> (scalable &amp; editable),
+            <strong>EPS</strong> (editable vector) and <strong>PNG</strong> (transparent
+            background). PNGs are exported at 16, 24, 32, 64, 128, 256 and 512px. It's one
+            download — a single ZIP with everything inside.</p>
+          </div></div>
+        </details>
+
+        <details name="faq" class="faq-item">
+          <summary>
+            <span>Can I use these in client and commercial work?</span>
+            <span class="faq-mark" aria-hidden="true"></span>
+          </summary>
+          <div class="faq-body"><div>
+            <p>Yes — unlimited commercial use is included. Use them for client projects,
+            products, paid presentations and internal tools. One purchase covers you and
+            your team; there's no subscription and nothing to renew.</p>
+          </div></div>
+        </details>
+
+        <details name="faq" class="faq-item">
+          <summary>
+            <span>Is this a one-time purchase?</span>
+            <span class="faq-mark" aria-hidden="true"></span>
+          </summary>
+          <div class="faq-body"><div>
+            <p>It is. $8, once, for all 30 icons in every format. No subscription. If the
+            set is updated, you'll get the updates for free.</p>
+          </div></div>
+        </details>
+      </div>
+    </section>
+
     <!-- BUY / CTA -->
     <section class="buy" id="buy">
       <div class="buy-card reveal">
@@ -237,16 +298,49 @@
 
   <footer class="footer">
     <div class="footer-inner">
-      <a class="brand" href="#top">
-        <svg class="brand-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <circle cx="12" cy="12" r="3"/><circle cx="5" cy="6" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="6" cy="19" r="2"/><path d="M7 7l3 3m7-3l-3 3m-4 5l-3 3"/>
-        </svg>
-        <span class="brand-lock"><span class="wm">Flushicons</span></span>
-      </a>
-      <p>Simple icons for complex ideas.</p>
-      <p class="fine">© <span id="year"></span> Flushicons · A Flush project. All rights reserved.</p>
+      <div class="footer-brand">
+        <a class="brand" href="#top">
+          <span class="brand-lock"><span class="wm">Flushicons</span></span>
+        </a>
+        <p>Simple icons for complex ideas.</p>
+      </div>
+      <nav class="footer-links" aria-label="Elsewhere">
+        <a href="https://flushinc.com" target="_blank" rel="noopener">Flush Inc <span aria-hidden="true">↗</span></a>
+        <a href="https://joelfisher.me" target="_blank" rel="noopener">Joel Fisher <span aria-hidden="true">↗</span></a>
+      </nav>
+    </div>
+    <div class="footer-fine">
+      <span>© <span id="year"></span> Flushicons — a Flush project.</span>
+      <span>All rights reserved.</span>
     </div>
   </footer>
+
+  <!-- ICON LIGHTBOX -->
+  <div class="lb" id="lightbox" aria-hidden="true">
+    <div class="lb-backdrop" data-lb-close></div>
+    <div class="lb-card" role="dialog" aria-modal="true" aria-labelledby="lbName">
+      <button class="lb-close" type="button" data-lb-close aria-label="Close preview">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+      <button class="lb-arrow lb-prev" type="button" aria-label="Previous icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <button class="lb-arrow lb-next" type="button" aria-label="Next icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+      </button>
+
+      <div class="lb-stage">
+        <div class="lb-swatch lb-on-light" id="lbLight"></div>
+        <div class="lb-swatch lb-on-dark" id="lbDark"></div>
+      </div>
+
+      <h3 class="lb-name" id="lbName">Icon</h3>
+      <p class="lb-index"><span id="lbPos">1</span> / 30</p>
+
+      <div class="lb-sizes" id="lbSizes"></div>
+      <p class="lb-note">// delivered as SVG · EPS · PNG — 16 to 512px</p>
+    </div>
+  </div>
 
   <!-- sticky mobile buy bar -->
   <a class="buy-bar" data-buy href="#buy">
