@@ -1,10 +1,10 @@
-# Complexicon
+# Flushicons
 
 **Simple icons for complex ideas.**
 
-Landing page for Complexicon — a visual language for modern technology.
+Landing page for Flushicons — a visual language for modern technology.
 30 original concept icons (AI, RAG, machine learning, knowledge graphs and more)
-for $8.
+for $8. A Flush project, in the flushinc / joelfisher.me black & white brand.
 
 ## What this is
 
@@ -14,7 +14,7 @@ A single-page, zero-build static site:
 | --- | --- |
 | `index.html` | Page markup and content |
 | `style.css` | Styling, layout, animations (theme-aware, light + dark) |
-| `script.js` | Icon grid, scroll reveals, sticky buy bar, checkout wiring |
+| `script.js` | Icon grid, scroll + line-by-line reveals, sticky buy bar, checkout wiring |
 
 No frameworks, no build step. Open `index.html` in a browser and it works.
 
