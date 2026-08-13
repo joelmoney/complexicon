@@ -95,7 +95,103 @@ const ICONS = [
 })();
 
 /* ------------------------------------------------------------
-   3. SCROLL REVEAL
+   3. LINE-BY-LINE HEADING REVEAL
+   Splits each [data-lines] heading into its actual rendered lines,
+   wraps each line in an overflow mask, and slides them up with a
+   stagger when the heading scrolls into view. Re-splits on resize
+   because line breaks depend on width.
+------------------------------------------------------------ */
+const prefersReduced =
+  window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function splitIntoLines(el) {
+  if (el.__orig == null) el.__orig = el.innerHTML;
+  else el.innerHTML = el.__orig;
+
+  // Tokenize direct children: words, <br> breaks, and inline nodes (e.g. caret)
+  const tokens = [];
+  Array.from(el.childNodes).forEach((node) => {
+    if (node.nodeType === Node.TEXT_NODE) {
+      node.textContent.split(/\s+/).forEach((word) => {
+        if (word === "") return;
+        const s = document.createElement("span");
+        s.className = "w";
+        s.style.display = "inline-block";
+        s.textContent = word;
+        tokens.push({ t: "w", el: s });
+      });
+    } else if (node.nodeType === Node.ELEMENT_NODE) {
+      if (node.tagName === "BR") {
+        tokens.push({ t: "br" });
+      } else {
+        node.style.display = "inline-block";
+        tokens.push({ t: "node", el: node });
+      }
+    }
+  });
+
+  // Lay flat to measure natural wrapping
+  el.innerHTML = "";
+  tokens.forEach((tk, i) => {
+    if (tk.t === "br") return;
+    if (i > 0 && tokens[i - 1].t !== "br" && tk.t !== "node") {
+      el.appendChild(document.createTextNode(" "));
+    }
+    el.appendChild(tk.el);
+  });
+
+  // Group tokens into lines by measured offsetTop (and explicit <br>)
+  const lines = [];
+  let cur = null, curTop = null;
+  tokens.forEach((tk) => {
+    if (tk.t === "br") { cur = null; curTop = null; return; }
+    if (tk.t === "node") { if (cur) cur.push(tk); return; } // attach caret to current line
+    const top = tk.el.offsetTop;
+    if (cur === null || top !== curTop) { cur = []; lines.push(cur); curTop = top; }
+    cur.push(tk);
+  });
+
+  // Rebuild as masked lines
+  el.innerHTML = "";
+  lines.forEach((line, li) => {
+    const outer = document.createElement("span");
+    outer.className = "line";
+    const inner = document.createElement("span");
+    inner.className = "line-in";
+    inner.style.setProperty("--i", li);
+    line.forEach((tk, wi) => {
+      if (wi > 0 && tk.t !== "node") inner.appendChild(document.createTextNode(" "));
+      tk.el.style.display = "";
+      inner.appendChild(tk.el);
+    });
+    outer.appendChild(inner);
+    el.appendChild(outer);
+  });
+}
+
+const lineTargets = Array.from(document.querySelectorAll("[data-lines]"));
+if (!prefersReduced && lineTargets.length) {
+  lineTargets.forEach(splitIntoLines);
+
+  let lastW = window.innerWidth, rt;
+  window.addEventListener("resize", () => {
+    if (window.innerWidth === lastW) return; // ignore mobile URL-bar height changes
+    lastW = window.innerWidth;
+    clearTimeout(rt);
+    rt = setTimeout(() => {
+      document.documentElement.classList.add("no-line-anim");
+      lineTargets.forEach(splitIntoLines);
+      requestAnimationFrame(() =>
+        requestAnimationFrame(() =>
+          document.documentElement.classList.remove("no-line-anim")
+        )
+      );
+    }, 180);
+  });
+}
+
+/* ------------------------------------------------------------
+   4. SCROLL REVEAL
 ------------------------------------------------------------ */
 (function scrollReveal() {
   const els = document.querySelectorAll(".reveal");
@@ -118,7 +214,7 @@ const ICONS = [
 })();
 
 /* ------------------------------------------------------------
-   4. NAV + STICKY BUY BAR ON SCROLL
+   5. NAV + STICKY BUY BAR ON SCROLL
 ------------------------------------------------------------ */
 (function scrollUI() {
   const nav = document.getElementById("nav");
@@ -133,7 +229,7 @@ const ICONS = [
 })();
 
 /* ------------------------------------------------------------
-   5. TIME-BASED GREETING  (a nod to the Flush brand)
+   6. TIME-BASED GREETING  (a nod to the Flush brand)
 ------------------------------------------------------------ */
 (function greeting() {
   const el = document.getElementById("greeting");
@@ -144,6 +240,6 @@ const ICONS = [
 })();
 
 /* ------------------------------------------------------------
-   6. FOOTER YEAR
+   7. FOOTER YEAR
 ------------------------------------------------------------ */
 document.getElementById("year").textContent = new Date().getFullYear();

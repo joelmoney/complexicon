@@ -384,6 +384,25 @@ main > section { max-width: var(--maxw); margin: 0 auto; padding: 96px 28px; }
 }
 .reveal.in { opacity: 1; transform: none; }
 
+/* a line-split heading fades as a block but does NOT slide (its lines do) */
+.reveal[data-lines] { transform: none; transition: opacity .5s var(--ease); }
+
+/* ---------- line-by-line heading reveal ---------- */
+[data-lines] .line {
+  display: block; overflow: hidden;
+  padding-block: 0.12em; margin-block: -0.12em;   /* room so descenders aren't clipped */
+}
+[data-lines] .line-in {
+  display: block;
+  transform: translateY(115%);
+  transition: transform .8s var(--ease);
+  transition-delay: calc(var(--i, 0) * 80ms);
+  will-change: transform;
+}
+.reveal.in .line-in { transform: none; }
+/* suppress the slide during resize re-splits to avoid a flicker */
+.no-line-anim .line-in { transition: none !important; }
+
 /* ---------- responsive ---------- */
 @media (max-width: 900px) {
   .hero { grid-template-columns: 1fr; }
@@ -406,4 +425,5 @@ main > section { max-width: var(--maxw); margin: 0 auto; padding: 96px 28px; }
   * { animation: none !important; scroll-behavior: auto; }
   .reveal { opacity: 1; transform: none; transition: none; }
   .caret { opacity: 1; }
+  [data-lines] .line-in { transform: none !important; transition: none !important; }
 }
