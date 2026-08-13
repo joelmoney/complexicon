@@ -1,0 +1,10 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+
+# Node (only if you later add tooling)
+node_modules/
+
+# Local screenshots / scratch
+scratchpad-*.png
