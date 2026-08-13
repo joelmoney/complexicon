@@ -1,5 +1,5 @@
 /* ============================================================
-   Complexicon — landing page behavior
+   Flushicons — landing page behavior
    ============================================================ */
 
 /* ------------------------------------------------------------
@@ -133,6 +133,17 @@ const ICONS = [
 })();
 
 /* ------------------------------------------------------------
-   5. FOOTER YEAR
+   5. TIME-BASED GREETING  (a nod to the Flush brand)
+------------------------------------------------------------ */
+(function greeting() {
+  const el = document.getElementById("greeting");
+  if (!el) return;
+  const h = new Date().getHours();
+  el.textContent =
+    h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening";
+})();
+
+/* ------------------------------------------------------------
+   6. FOOTER YEAR
 ------------------------------------------------------------ */
 document.getElementById("year").textContent = new Date().getFullYear();
